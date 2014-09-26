@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/main/scala"/>
-	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/scala"/>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="src" path="src/test/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
+	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER" exported="true"/>
+	<classpathentry sourcepath="C:/Users/owner/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-compiler/2.11.2/369dea2bc09ce8770d93ec8bcc85a372a6fec429/scala-compiler-2.11.2-sources.jar" kind="lib" path="C:/Users/owner/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-compiler/2.11.2/781338d6dd3c5e002a838c2d483858fb963ae479/scala-compiler-2.11.2.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/owner/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/28e0ad201304e4a4abf999ca0570b7cffc352c3c/junit-4.11-sources.jar" kind="lib" path="C:/Users/owner/.gradle/caches/modules-2/files-2.1/junit/junit/4.11/4e031bb61df09069aeb2bffb4019e7a5034a4ee0/junit-4.11.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/owner/.gradle/caches/modules-2/files-2.1/org.scalatest/scalatest_2.11/2.2.2/ef18457378666d585eb3f1f589e61ecc9c047886/scalatest_2.11-2.2.2-sources.jar" kind="lib" path="C:/Users/owner/.gradle/caches/modules-2/files-2.1/org.scalatest/scalatest_2.11/2.2.2/f1f037648ba7dfbeeb895f36573973e9780b1c56/scalatest_2.11-2.2.2.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/owner/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-reflect/2.11.2/84c4ff1b1d352bc3494c3cb357051dff7ac84826/scala-reflect-2.11.2-sources.jar" kind="lib" path="C:/Users/owner/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-reflect/2.11.2/1a6265829fcde7d3a522fe2c0366f2fc40727b17/scala-reflect-2.11.2.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/owner/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-xml_2.11/1.0.2/312c3557d1ca0b34820f3b3fc5404a47936ceb26/scala-xml_2.11-1.0.2-sources.jar" kind="lib" path="C:/Users/owner/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-xml_2.11/1.0.2/820fbca7e524b530fdadc594c39d49a21ea0337e/scala-xml_2.11-1.0.2.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/owner/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-parser-combinators_2.11/1.0.2/5a81a4982de4128ae45b48e432712952184af067/scala-parser-combinators_2.11-1.0.2-sources.jar" kind="lib" path="C:/Users/owner/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-parser-combinators_2.11/1.0.2/ba0bbca656b10f235b6eb17a541e5d728c29040a/scala-parser-combinators_2.11-1.0.2.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/owner/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar" kind="lib" path="C:/Users/owner/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar" exported="true"/>
 </classpath>
