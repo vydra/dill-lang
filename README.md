@@ -1,10 +1,10 @@
 dill-lang
 =========
 
-Dill is a 'tiny' language for Behavior Driven Development. Its focus is to capture the
+Dill is a 'tiny' language for Behavior Driven Development. It's focus is to capture the
 intent of the business scenario along with representative data samples, but without 
 bothering the business stakeholder with any specific steps.
-It borrows from heavily from Cucumber, but the smallest unit of execution is a scenario.
+It borrows heavily from Cucumber, but the smallest unit of execution is a scenario.
 
 Dill works with existing unit testing frameworks. The initial implementation is for JUnit.
 
