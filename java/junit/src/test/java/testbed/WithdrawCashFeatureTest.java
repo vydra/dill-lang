@@ -11,18 +11,18 @@ import dill.AbstractFeatureTest;
 import java.math.BigDecimal;
 
 @RunWith(DillJUnitRunner.class)
-public class WithdrawalFeatureTest extends AbstractFeatureTest {
+public class WithdrawCashFeatureTest extends AbstractFeatureTest {
 	
 /*Feature: Withdraw cash
 
-Scenario:
-  Given that I have {balance=$100.00}
-  When I want to withdraw {withdrawAmout=$50.00}
-  Then I will have {remainingBalance=$50.00}
+Scenario: Successful withdrawal
+  My bank {balance=$100.00}
+  When I withdraw {withdrawAmout=$50.00}
+  I will have left {remainingBalance=$50.00}
   */
 
 	@Test
-	public void test() {
+	public void SuccessfulWithdrawal() {
 		BigDecimal balance = getBigDecimal("balance");
 		BigDecimal withdrawAmout = getBigDecimal("withdrawAmout");
 		BigDecimal remainingBalance = getBigDecimal("remainingBalance");

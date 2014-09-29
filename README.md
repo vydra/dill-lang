@@ -1,8 +1,10 @@
 dill-lang
 =========
 
-Dill is a 'tiny' language for Behavior Driven Development.
-It borrows from Cucumber, but it has no steps -- the smallest unit of execution is scenario.
+Dill is a 'tiny' language for Behavior Driven Development. Its focus is to capture the
+intent of the business scenario along with representative data samples, but without 
+bothering the business stakeholder with any specific steps.
+It borrows from heavily from Cucumber, but the smallest unit of execution is a scenario.
 
 Dill works with existing unit testing frameworks. The initial implementation is for JUnit.
 
@@ -10,9 +12,30 @@ Example:
 ````
 Feature: Withdraw cash
 
-Scenario:
-  Given that I have {balance=$100.00}
-  When I want to withdraw {withdrawAmout=$50.00}
-  Then I will have {remainingBalance=$50.00}
+Scenario: Successful withdrawal
+  My bank {balance=$100.00}
+  When I withdraw {withdrawAmout=$50.00}
+  I will have left {remainingBalance=$50.00}
   
 ````  
+
+When the scenario above is run without corresponding JUnit test in place, it generates 
+the following stub code:
+
+````
+//package and import stuff
+
+@RunWith(DillJUnitRunner.class)
+public class WithdrawCashFeatureTest extends AbstractFeatureTest {
+
+	@Test
+	public void SuccessfulWithdrawal() {
+		BigDecimal balance = getBigDecimal("balance");
+		BigDecimal withdrawAmout = getBigDecimal("withdrawAmout");
+		BigDecimal remainingBalance = getBigDecimal("remainingBalance");
+		
+		/* fill in the details here */
+		
+	}
+}
+````
