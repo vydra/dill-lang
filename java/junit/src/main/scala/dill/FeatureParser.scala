@@ -4,17 +4,40 @@ import scala.util.parsing.combinator.JavaTokenParsers
 
 class FeatureParser extends JavaTokenParsers {
   
-  def featureParser : Parser[FeatureNode] = literal("Feature:") ~>  """.+""".r ^^ {
-    
-    val res = new FeatureNode(_)
-    res
-   
+  
+  def feature = literal("Feature:") ~>  """.+""".r ^^ {
+    FeatureNode(_)
   }
   
-  def parse(in : String) = parseAll(featureParser, in)
+  def scenario = literal("Scenario:") ~>  """.+""".r ^^ {
+    ScenarioNode(_)
+  }
   
+  def dill = feature ~ rep(scenario) ^^ {
+    case feature ~ scenarios => 
+      scenarios.foreach { scenario =>
+    	  feature.add(scenario)
+      } 
+     feature   
+  }
+  
+  def parse(in : String) = {
+    parseAll(dill, in)
+  }
   
 }
 
-case class FeatureNode(val featureName : String) {
+abstract class ASTNode
+
+case class FeatureNode(val name : String) extends ASTNode {
+  var scenarios : List[ScenarioNode]  = List()
+  def add(s : ScenarioNode) = {
+    scenarios = scenarios :+ s
+    this
+  }
+  override def toString = name + "\nscenarios: " + scenarios
+}
+
+case class ScenarioNode(val name : String ) extends ASTNode {
+  
 }
