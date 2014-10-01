@@ -6,21 +6,20 @@ import scala.collection.mutable.HashMap
 class FeatureParser extends JavaTokenParsers {
   
   
-  def feature = literal("Feature:") ~>  """.+""".r ^^ {
+  def featureParser = literal("Feature:") ~>  """.+""".r ^^ {
     FeatureNode(_)
   }
   
-  def scenario = literal("Scenario:") ~> """.+""".r  ~ nameValue.? ^^ {
-    case scanarioName ~ nameValue =>
+  def scenarioParser = literal("Scenario:") ~> """.+""".r  ~ rep(nameValueParser) ^^ {
+    case scanarioName ~ nameValues =>
     	val scenario = ScenarioNode(scanarioName)
-    	nameValue match {
-	      case Some(nameValue) => scenario.addSymbol(nameValue.name, nameValue.value)
-	      case None => 
+    	nameValues.foreach { nv => 
+		      scenario.addSymbol(nv.name, nv.value)
     	}
     scenario 	
   }
   
-  def nameValue = """.*\{.+=""".r ~ decimalNumber ~ literal("}") ^^ {
+  def nameValueParser = """.*\{.+=""".r ~ (decimalNumber | """[\.\d\w$]+""".r) ~ literal("}") ^^ {
     case left ~ right ~ closingBrace  =>
       val name = left.split("\\{").last.split("=").head
       val value = right
@@ -28,7 +27,7 @@ class FeatureParser extends JavaTokenParsers {
     res	
   }
   
-  def dill = feature ~ rep(scenario) ^^ {
+  def dill = featureParser ~ rep(scenarioParser) ^^ {
     case feature ~ scenarios => 
       scenarios.foreach { scenario =>
     	  feature.add(scenario)
