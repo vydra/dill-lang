@@ -26,6 +26,7 @@ class FeatureParserSpec extends FlatSpec with Matchers {
     featureNode.scenarios.head.name should be ("withdraw with balance left")
   }
   
+  
   it should "have one or more scenario" in {
     val featureTxt = 
       """
@@ -39,6 +40,21 @@ class FeatureParserSpec extends FlatSpec with Matchers {
 	
     featureNode.scenarios.head.name should be ("withdraw with balance left")
     //TODO: add test for 2nd scenario
+  } 
+
+  
+  "scenario" should "contain named data" in {
+    val featureTxt = 
+      """
+      Feature: Withdraw cash
+      Scenario: withdraw with balance left
+      if {balance=100}
+      
+      """
+    val p = new FeatureParser()
+	val featureNode = p.parse(featureTxt).get
+	
+    featureNode.scenarios.head.get("balance") should be ("100")
   }
 
 }
