@@ -27,7 +27,7 @@ class FeatureParser extends JavaTokenParsers {
     res	
   }
   
-  def dill = featureParser ~ rep(scenarioParser) ^^ {
+  def dillParser = featureParser ~ rep(scenarioParser) ^^ {
     case feature ~ scenarios => 
       scenarios.foreach { scenario =>
     	  feature.add(scenario)
@@ -36,7 +36,7 @@ class FeatureParser extends JavaTokenParsers {
   }
   
   def parse(in : String) = {
-    parseAll(dill, in)
+    parseAll(dillParser, in)
   }
   
 }
@@ -48,12 +48,18 @@ case class NameValueNode(val name : String, val value : Any) extends ASTNode {
 }
 
 case class FeatureNode(val name : String) extends ASTNode {
-  var scenarios : List[ScenarioNode]  = List()
+  val scenariosMap = HashMap[String, ScenarioNode]()
+  
+  def findScenario( name : String) = {
+    scenariosMap.get(name)
+  }
+  
   def add(s : ScenarioNode) = {
-    scenarios = scenarios :+ s
+    scenariosMap.put(s.name, s)
     this
   }
-  override def toString = name + "\nscenarios: " + scenarios
+  
+  override def toString = name + "\nscenarios: " + scenariosMap.values
 }
 
 case class ScenarioNode(val name : String ) extends ASTNode {

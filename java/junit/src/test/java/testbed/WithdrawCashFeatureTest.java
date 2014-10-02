@@ -29,6 +29,9 @@ Scenario: Successful withdrawal
 		
 		assertEquals(new BigDecimal(100.00),balance);
 	}
+	
+	@Test
+	public void test2() { }
 
 	
 

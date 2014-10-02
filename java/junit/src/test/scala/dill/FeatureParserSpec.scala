@@ -23,7 +23,10 @@ class FeatureParserSpec extends FlatSpec with Matchers {
     val p = new FeatureParser()
 	val featureNode = p.parse(featureTxt).get
 	
-    featureNode.scenarios.head.name should be ("withdraw with balance left")
+    featureNode.findScenario("withdraw with balance left") match {
+      case Some(s) => s.name should be ("withdraw with balance left")
+    }
+    
   }
   
   
@@ -38,8 +41,12 @@ class FeatureParserSpec extends FlatSpec with Matchers {
     val p = new FeatureParser()
 	val featureNode = p.parse(featureTxt).get
 	
-    featureNode.scenarios.head.name should be ("withdraw with balance left")
-    //TODO: add test for 2nd scenario
+    featureNode.findScenario("withdraw with balance left") match {
+      case Some(s) => s.name should be ("withdraw with balance left")
+    }
+    featureNode.findScenario("withdraw with 0 balance") match {
+      case Some(s) => s.name should be ("withdraw with 0 balance")
+    }
   } 
 
   
@@ -48,13 +55,15 @@ class FeatureParserSpec extends FlatSpec with Matchers {
       """
       Feature: Withdraw cash
       Scenario: withdraw with balance left
-      if {balance=100}
+        if {balance=100}
       
       """
     val p = new FeatureParser()
 	val featureNode = p.parse(featureTxt).get
 	
-    featureNode.scenarios.head.get("balance") should be ("100")
+	featureNode.findScenario("withdraw with balance left") match {
+      case Some(s) => s.get("balance") should be ("100")
+    }
   }
   /*
    
@@ -72,9 +81,13 @@ class FeatureParserSpec extends FlatSpec with Matchers {
     val p = new FeatureParser()
 	val featureNode = p.parse(featureTxt).get
 	
-    featureNode.scenarios.head.get("balance") should be ("$100.00")
-    featureNode.scenarios.head.get("withdrawAmout") should be ("$60.00")
-    featureNode.scenarios.head.get("remainingBalance") should be ("$40.00")
+	featureNode.findScenario("withdraw with balance left") match {
+      case Some(s) => 
+        s.get("balance") should be ("$100.00")
+        s.get("withdrawAmout") should be ("$60.00")
+        s.get("remainingBalance") should be ("$40.00")
+    }
+	
   }
 
 }
