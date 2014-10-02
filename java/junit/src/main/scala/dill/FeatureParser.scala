@@ -5,12 +5,13 @@ import scala.collection.mutable.HashMap
 
 class FeatureParser extends JavaTokenParsers {
   
+  def charSequenceParser = """.+""".r
   
-  def featureParser = literal("Feature:") ~>  """.+""".r ^^ {
+  def featureParser = literal("Feature:") ~>  charSequenceParser ^^ {
     FeatureNode(_)
   }
   
-  def scenarioParser = literal("Scenario:") ~> """.+""".r  ~ rep(nameValueParser) ^^ {
+  def scenarioParser = literal("Scenario:") ~> charSequenceParser  ~ rep(nameValueParser) ^^ {
     case scanarioName ~ nameValues =>
     	val scenario = ScenarioNode(scanarioName)
     	nameValues.foreach { nv => 
@@ -19,9 +20,13 @@ class FeatureParser extends JavaTokenParsers {
     scenario 	
   }
   
-  def nameValueParser = """.*\{.+=""".r ~ (decimalNumber | """[\.\d\w$]+""".r) ~ literal("}") ^^ {
-    case left ~ right ~ closingBrace  =>
-      val name = left.split("\\{").last.split("=").head
+  def upToLeftBraceParser = """[^{]+\{""".r
+  def leftEqParser = """[^=]+""".r
+  def rightEqParser = """[^}]+""".r
+  
+  def nameValueParser = upToLeftBraceParser ~ leftEqParser ~ literal("=") ~ (decimalNumber | rightEqParser) ~ literal("}") ^^ {
+    case upToLeftBrace ~ left ~ eq ~ right ~ closingBrace  =>
+      val name = left //.split("=").head
       val value = right
       val res = NameValueNode(name,value)
     res	
