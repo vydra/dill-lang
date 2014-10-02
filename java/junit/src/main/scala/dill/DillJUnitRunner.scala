@@ -22,6 +22,16 @@ class DillJUnitRunner(val clazz: java.lang.Class[_]) extends BlockJUnit4ClassRun
     val featureTxt = Source.fromFile("src/test/resources/" + featureName + ".feature").getLines().mkString("\n")
     val p = new FeatureParser()
     val featureNode = p.parse(featureTxt).get
+    
+    featureNode.findScenario(method.getName()) match {
+      case Some(s) =>
+        s.symbolTable.keysIterator.foreach( name =>
+          s.symbolTable.get(name) match {
+            case Some(value) => currTest.addSymbol(name, value)
+          }
+        )
+      case None => throw new Exception("Scenario not found")  
+    }
 
     super.methodInvoker(method, currTest)
   }

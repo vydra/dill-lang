@@ -21,18 +21,26 @@ Scenario: Successful withdrawal
   I will have left {remainingBalance=$50.00}
   */
 
-	@Test
-	public void SuccessfulWithdrawal() {
-		BigDecimal balance = getBigDecimal("balance");
-		BigDecimal withdrawAmout = getBigDecimal("withdrawAmout");
-		BigDecimal remainingBalance = getBigDecimal("remainingBalance");
-		
-		assertEquals(new BigDecimal(100.00),balance);
-	}
+//	@Test
+//	public void SuccessfulWithdrawal() {
+//		BigDecimal balance = getBigDecimal("balance");
+//		BigDecimal withdrawAmout = getBigDecimal("withdrawAmout");
+//		BigDecimal remainingBalance = getBigDecimal("remainingBalance");
+//		
+//		assertEquals(new BigDecimal(100.00),balance);
+//	}
 	
 	@Test
-	public void test2() { }
-
+	public void SuccessfulWithdrawal() {
+		String balance = getString("balance");
+		String withdrawAmout = getString("withdrawAmout");
+		String remainingBalance = getString("remainingBalance");
+		
+		/* custom code below */
+		assertEquals("$100.00",balance);
+		assertEquals("$60.00",withdrawAmout);
+		assertEquals("$40.00",remainingBalance);
+	}
 	
 
 }
