@@ -1,3 +1,1 @@
-language: java
-
-script: java/junit/gradle test
+language: scala
