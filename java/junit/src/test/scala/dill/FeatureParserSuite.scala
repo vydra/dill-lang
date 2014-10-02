@@ -1,19 +1,20 @@
 package dill
 
-import org.scalatest.FlatSpec
-import org.scalatest._
-import java.io.File
+import org.scalatest.junit.AssertionsForJUnit
+import org.junit._
+import org.scalatest.junit.ShouldMatchersForJUnit
+import org.scalatest.junit.JUnitSuite
 
-class FeatureParserSpec extends FlatSpec with Matchers {
+class FeatureParserSuite  extends JUnitSuite with ShouldMatchersForJUnit {
   
-  "Feature file text" should "start with 'Feature: followed by feature name" in {
+  @Test def feature_file_starts_with_Feature()  {
     val featureTxt = """Feature: Withdraw cash"""
     val p = new FeatureParser()
 	val featureNode = p.parse(featureTxt).get
 	featureNode.name should be ("Withdraw cash")
   } 
   
-  it should "have at least one scenario" in {
+  @Test def at_least_one_scenario {
     val featureTxt = 
       """
       Feature: Withdraw cash
@@ -29,8 +30,7 @@ class FeatureParserSpec extends FlatSpec with Matchers {
     
   }
   
-  
-  it should "have one or more scenarios" in {
+  @Test def one_or_more_scenarios {
     val featureTxt = 
       """
       Feature: Withdraw cash
@@ -48,9 +48,8 @@ class FeatureParserSpec extends FlatSpec with Matchers {
       case Some(s) => s.name should be ("withdraw with 0 balance")
     }
   } 
-
   
-  "scenario" should "may contain named data" in {
+  @Test def scenario_may_contain_named_data {
     val featureTxt = 
       """
       Feature: Withdraw cash
@@ -65,10 +64,8 @@ class FeatureParserSpec extends FlatSpec with Matchers {
       case Some(s) => s.get("balance") should be ("100")
     }
   }
-  /*
-   
-   */
-  "scenario" should "may contain multiple occurances of named data" in {
+  
+  @Test def scenario_may_contain_multiple_occurances_of_named_data {
     val featureTxt = 
       """
       Feature: Withdraw cash
