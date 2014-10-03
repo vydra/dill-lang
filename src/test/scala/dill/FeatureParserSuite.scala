@@ -5,7 +5,7 @@ import org.junit._
 import org.scalatest.junit.ShouldMatchersForJUnit
 import org.scalatest.junit.JUnitSuite
 
-class FeatureParserSuite  extends JUnitSuite with ShouldMatchersForJUnit {
+class FeatureParserSuite extends JUnitSuite with ShouldMatchersForJUnit {
   
   @Test def feature_file_starts_with_Feature()  {
     val featureTxt = """Feature: Withdraw cash"""
