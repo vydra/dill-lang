@@ -20,22 +20,14 @@ class FeatureParser extends JavaTokenParsers {
     scenario 	
   }
   
-  def USDollarPrefixParser = literal("$") ~> decimalNumber ^^ {
-    MoneyNode(_)
-  }
-  
   def upToLeftBraceParser = """[^{]+\{""".r
   def leftEqParser = """[^=]+""".r
   def rightEqParser = """[^}]+""".r
   
-  def nameValueParser = upToLeftBraceParser ~ leftEqParser ~ literal("=") ~ (decimalNumber | USDollarPrefixParser | rightEqParser) ~ literal("}") ^^ {
+  def nameValueParser = upToLeftBraceParser ~ leftEqParser ~ literal("=") ~ (decimalNumber | rightEqParser) ~ literal("}") ^^ {
     case upToLeftBrace ~ left ~ eq ~ right ~ closingBrace  =>
       val name = left //.split("=").head
-      val value = right match {
-        case MoneyNode(v) => right.asInstanceOf[MoneyNode].asBigDecimal
-        case _  => right
-      }
-      
+      val value = right
       val res = NameValueNode(name,value)
     res	
   }
@@ -56,7 +48,9 @@ class FeatureParser extends JavaTokenParsers {
 
 abstract class ASTNode
 
-case class NameValueNode(val name : String, val value : Any) extends ASTNode
+case class NameValueNode(val name : String, val value : Any) extends ASTNode {
+  
+}
 
 case class FeatureNode(val name : String) extends ASTNode {
   val scenariosMap = HashMap[String, ScenarioNode]()
@@ -81,14 +75,8 @@ case class ScenarioNode(val name : String ) extends ASTNode {
     symbolTable.put(key, value)
   }
   
-  def getSymbolValue(symbolName : String) = {
+  def get(symbolName : String) = {
     symbolTable(symbolName)
   }
   
-}
-
-case class MoneyNode(val amount : String) extends ASTNode {
-  def asBigDecimal() = {
-    new java.math.BigDecimal(amount)
-  }
 }

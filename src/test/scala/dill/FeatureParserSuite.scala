@@ -61,11 +61,11 @@ class FeatureParserSuite extends JUnitSuite with ShouldMatchersForJUnit {
 	val featureNode = p.parse(featureTxt).get
 	
 	featureNode.findScenario("withdraw with balance left") match {
-      case Some(s) => s.getSymbolValue("balance") should be ("100")
+      case Some(s) => s.get("balance") should be ("100")
     }
   }
   
-  @Test def scenario_may_contain_multiple_occurances_of_named_dollar_amount_data {
+  @Test def scenario_may_contain_multiple_occurances_of_named_data {
     val featureTxt = 
       """
       Feature: Withdraw cash
@@ -80,9 +80,9 @@ class FeatureParserSuite extends JUnitSuite with ShouldMatchersForJUnit {
 	
 	featureNode.findScenario("withdraw with balance left") match {
       case Some(s) => 
-        s.getSymbolValue("balance") should be (new java.math.BigDecimal("100.00"))
-        s.getSymbolValue("withdrawAmout") should be (new java.math.BigDecimal("60.00"))
-        s.getSymbolValue("remainingBalance") should be (new java.math.BigDecimal("40.00"))
+        s.get("balance") should be ("$100.00")
+        s.get("withdrawAmout") should be ("$60.00")
+        s.get("remainingBalance") should be ("$40.00")
     }
 	
   }
