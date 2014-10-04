@@ -24,12 +24,19 @@ class FeatureParser extends JavaTokenParsers {
   def leftEqParser = """[^=]+""".r
   def rightEqParser = """[^}]+""".r
 
-  def nameValueParser = upToLeftBraceParser ~ leftEqParser ~ literal("=") ~ (decimalNumber | rightEqParser) ~ literal("}") ^^ {
+  def nameValueParser = upToLeftBraceParser ~ leftEqParser ~ literal("=") ~ (decimalNumber | moneyParser | rightEqParser) ~ literal("}") ^^ {
     case upToLeftBrace ~ left ~ eq ~ right ~ closingBrace  =>
       val name = left //.split("=").head
-      val value = right
+      val value = right match {
+        case MoneyNode(_) => right.asInstanceOf[MoneyNode].asBigDecimal
+        case _ => right
+      }
       val res = NameValueNode(name,value)
     res
+  }
+
+  def moneyParser = literal("$") ~> """\d+[.]\d+""".r ^^ {
+    MoneyNode(_)
   }
 
   def dillParser = featureParser ~ rep(scenarioParser) ^^ {
@@ -79,4 +86,10 @@ case class ScenarioNode(val name : String ) extends ASTNode {
     symbolTable(symbolName)
   }
 
+}
+
+case class MoneyNode(val amount : String) extends ASTNode {
+  def asBigDecimal() = {
+    BigDecimal(amount).underlying
+  }
 }
