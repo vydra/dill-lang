@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="dill.FeatureParserSuite" tests="5" skipped="0" failures="0" errors="0" timestamp="2014-10-04T01:42:21" hostname="cwilliams-mac15.local" time="0.2">
+  <properties/>
+  <testcase name="one_or_more_scenarios" classname="dill.FeatureParserSuite" time="0.19"/>
+  <testcase name="feature_file_starts_with_Feature" classname="dill.FeatureParserSuite" time="0.0"/>
+  <testcase name="scenario_may_contain_multiple_occurrences_of_named_data" classname="dill.FeatureParserSuite" time="0.007"/>
+  <testcase name="at_least_one_scenario" classname="dill.FeatureParserSuite" time="0.001"/>
+  <testcase name="scenario_may_contain_named_data" classname="dill.FeatureParserSuite" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
