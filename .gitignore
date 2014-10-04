@@ -17,3 +17,7 @@ project/plugins/project/
 .worksheet
 
 java/junit/.cache
+
+# Gradle specific
+build/
+.gradle/

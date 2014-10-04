@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="dill.UtilsSuite" tests="1" skipped="0" failures="0" errors="0" timestamp="2014-10-04T01:42:21" hostname="cwilliams-mac15.local" time="0.0">
-  <properties/>
-  <testcase name="parse_feature_name_from_junit" classname="dill.UtilsSuite" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
