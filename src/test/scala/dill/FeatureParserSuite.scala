@@ -5,13 +5,13 @@ import org.junit._
 import org.scalatest.junit.ShouldMatchersForJUnit
 import org.scalatest.junit.JUnitSuite
 
-class FeatureParserSuite extends JUnitSuite with ShouldMatchersForJUnit {
+class FeatureParserSuite extends JUnitSuite  {
   
   @Test def feature_file_starts_with_Feature()  {
     val featureTxt = """Feature: Withdraw cash"""
     val p = new FeatureParser()
 	val featureNode = p.parse(featureTxt).get
-	featureNode.name should be ("Withdraw cash")
+	assert( featureNode.name === "Withdraw cash")
   } 
   
   @Test def at_least_one_scenario {
@@ -25,7 +25,8 @@ class FeatureParserSuite extends JUnitSuite with ShouldMatchersForJUnit {
 	val featureNode = p.parse(featureTxt).get
 
     featureNode.findScenario("withdraw with balance left") match {
-      case Some(s) => s.name should be ("withdraw with balance left")
+      case Some(s) => assert(s.name === "withdraw with balance left")
+      case None => 
     }
 
   }
@@ -42,10 +43,12 @@ class FeatureParserSuite extends JUnitSuite with ShouldMatchersForJUnit {
 	val featureNode = p.parse(featureTxt).get
 
     featureNode.findScenario("withdraw with balance left") match {
-      case Some(s) => s.name should be ("withdraw with balance left")
+      case Some(s) => assert(s.name === "withdraw with balance left")
+      case None => 
     }
     featureNode.findScenario("withdraw with 0 balance") match {
-      case Some(s) => s.name should be ("withdraw with 0 balance")
+      case Some(s) => assert(s.name === "withdraw with 0 balance")
+      case None => 
     }
   } 
   
@@ -61,7 +64,8 @@ class FeatureParserSuite extends JUnitSuite with ShouldMatchersForJUnit {
 	val featureNode = p.parse(featureTxt).get
 
 	featureNode.findScenario("withdraw with balance left") match {
-      case Some(s) => s.get("balance") should be ("100")
+      case Some(s) => assert(s.get("balance") === "100")
+      case None => 
     }
   }
 
@@ -80,9 +84,10 @@ class FeatureParserSuite extends JUnitSuite with ShouldMatchersForJUnit {
 
 	featureNode.findScenario("withdraw with balance left") match {
       case Some(s) =>
-        s.get("balance") should be (BigDecimal("100.00").underlying)
-        s.get("withdrawAmout") should be (BigDecimal("60.00").underlying)
-        s.get("remainingBalance") should be (BigDecimal("40.00").underlying)
+        assert(s.get("balance") === BigDecimal("100.00").underlying)
+        assert(s.get("withdrawAmout") === BigDecimal("60.00").underlying)
+        assert(s.get("remainingBalance") === BigDecimal("40.00").underlying)
+      case None =>   
     }
 
   }

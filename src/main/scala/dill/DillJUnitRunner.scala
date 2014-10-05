@@ -28,6 +28,7 @@ class DillJUnitRunner(val clazz: java.lang.Class[_]) extends BlockJUnit4ClassRun
         s.symbolTable.keysIterator.foreach( name =>
           s.symbolTable.get(name) match {
             case Some(value) => currTest.addSymbol(name, value)
+            case None => 
           }
         )
       case None => throw new Exception("Scenario not found")

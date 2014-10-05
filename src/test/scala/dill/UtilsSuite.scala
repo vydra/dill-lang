@@ -5,11 +5,11 @@ import org.scalatest.junit.ShouldMatchersForJUnit
 import org.scalatest.junit.JUnitSuite
 import org.junit.Test
 
-class UtilsSuite extends  JUnitSuite with ShouldMatchersForJUnit {
+class UtilsSuite extends  JUnitSuite {
   
   @Test def parse_feature_name_from_junit() {
     
-    Utils.featureNameFromClassName("testbed.WithdrawCashFeatureTest") should be ("WithdrawCash")
+    assert(Utils.featureNameFromClassName("testbed.WithdrawCashFeatureTest") === "WithdrawCash")
   }
   
   //TODO: dvydra add negative tests
