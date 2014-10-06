@@ -3,4 +3,4 @@ java:
   java_version: java-7-openjdk
   gradle_version: 2.1
 tests:
-  - ./gradle test
+  - gradle test
