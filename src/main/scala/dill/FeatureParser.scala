@@ -58,17 +58,19 @@ class FeatureParser extends JavaTokenParsers {
 
   def dataTableRowParser = rep(dataTableCellParser) <~ literal("|") ^^ {
     case cells =>
-      val row = new DataTableRowNode()
+      val row = DataTableRowNode()
       cells.foreach { cell =>
         row.addValue(cell.value)
       }
       row
   }
 
-//  def dataTableParser = rep(dataTableRowParser) ^^ {
-//    case row =>
-//      println("row: " + row)
-//  }
+  def dataTableParser = rep(dataTableRowParser) ^^ {
+    case rows =>
+      val dataTableNode = DataTableNode()
+      rows.foreach { row => dataTableNode.addRow(row) }
+      dataTableNode
+  }
 
   def dillParser = featureParser ~ rep(scenarioParser) ^^ {
     case feature ~ scenarios =>
@@ -130,6 +132,13 @@ case class DataTableRowNode() extends ASTNode {
   val cellValues = MutableList[String]()
   def addValue(value: String) {
     cellValues += value
+  }
+}
+
+case class DataTableNode() extends ASTNode {
+  val rows = MutableList[DataTableRowNode]()
+  def addRow(row: DataTableRowNode) {
+    rows += row
   }
 }
 

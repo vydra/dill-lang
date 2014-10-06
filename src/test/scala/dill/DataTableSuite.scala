@@ -27,16 +27,16 @@ class DataTableSuite extends JUnitSuite {
     assert( dataTableRowNode.cellValues(1) === "2")
   } 
   
-//  @Test def data_table_two_rows_one_cell_each()  {
-//    val tableTxt = """
-//      |1|
-//      |2|"""
-//    val p = new FeatureParser()
-//	val dataTableRowNode = p.parseAll(p.dataTableParser, tableTxt).get
-////	assert( dataTableRowNode.cellValues.size === 2)
-////	assert( dataTableRowNode.cellValues(0) === "1")
-////    assert( dataTableRowNode.cellValues(1) === "2")
-//  } 
+  @Test def data_table_two_rows_one_cell_each()  {
+    val tableTxt = """
+      |1|
+      |2|"""
+    val p = new FeatureParser()
+	val dataTableNode = p.parseAll(p.dataTableParser, tableTxt).get
+	assert( dataTableNode.rows.size === 2)
+	assert( dataTableNode.rows(0).cellValues(0)  === "1")
+	assert( dataTableNode.rows(1).cellValues(0)  === "2")
+  } 
   
   @Test def scanrio_with_datatable1()  {
     val txt = """Scenario: data table scenario
