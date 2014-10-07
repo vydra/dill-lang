@@ -1,28 +1,35 @@
 package dill
 
+import scala.BigDecimal
+import scala.annotation.migration
 import scala.util.parsing.combinator.JavaTokenParsers
-import scala.collection.mutable.HashMap
-import scala.collection.mutable.MutableList
 
 class FeatureParser extends JavaTokenParsers {
+
+  def parse(in: String) = {
+    parseAll(dillParser, in)
+  }
 
   def dillParser = featureNameParser ~ rep(scenarioParser) ^^ {
     case featureName ~ scenarios =>
       FeatureNode(featureName, scenarios)
   }
-  
+
   def featureNameParser = "Feature:" ~> charSequenceParser
 
-  def scenarioParser = "Scenario:" ~> charSequenceParser ~ opt(rep(nameValueParser)) ~ opt(dataTableParser) ^^ {
+  def scenarioParser = "Scenario:" ~> charSequenceParser ~ opt(symbolsParser) ~ opt(dataTableParser) ^^ {
     case scanarioName ~ symbols ~ dataTable =>
-      ScenarioNode(scanarioName, symbols,  dataTable)
+      ScenarioNode(scanarioName, symbols, dataTable)
   }
+
+  def symbolsParser = rep(nameValueParser)
 
   def upToLeftBraceParser = """[^{]+\{""".r
   def leftEqParser = """[^=]+""".r
   def rightEqParser = """[^}]+""".r
 
-  def nameValueParser = upToLeftBraceParser ~> leftEqParser ~ literal("=") ~ (decimalNumber | moneyParser | rightEqParser) ~ literal("}") ^^ {
+  //TODO - dvydra - try using polymorphism insted of asInstanceof!
+  def nameValueParser = upToLeftBraceParser ~> leftEqParser ~ "=" ~ (decimalNumber | moneyParser | rightEqParser) ~ "}" ^^ {
     case left ~ eq ~ right ~ closingBrace =>
       val name = left //.split("=").head
       val value = right match {
@@ -32,43 +39,33 @@ class FeatureParser extends JavaTokenParsers {
       NameValueNode(name, value)
   }
 
-  def moneyParser = literal("$") ~> """\d+[.]\d+""".r ^^ {
+  def moneyParser = "$" ~> """\d+[.]\d+""".r ^^ {
     MoneyNode(_)
   }
 
-  def dataTableCellParser = literal("|") ~> """[^|]""".r ^^ {
-    new DataCellNode(_)
+  def dataTableCellParser = "|" ~> """[^|]""".r ^^ {
+    DataCellNode(_)
   }
 
-  def dataTableRowParser = rep(dataTableCellParser) <~ literal("|") ^^ {
+  def dataTableRowParser = rep(dataTableCellParser) <~ "|" ^^ {
     case cells =>
-      val row = DataTableRowNode()
-      cells.foreach { cell =>
-        row.addValue(cell.value)
-      }
-      row
+      DataTableRowNode(cells.map(s => (s.value)))
   }
 
   def dataTableParser = rep(dataTableRowParser) ^^ {
     case rows =>
-      val dataTableNode = DataTableNode()
-      rows.foreach { row => dataTableNode.addRow(row) }
-      dataTableNode
+      DataTableNode(rows)
   }
 
   def charSequenceParser = """.+""".r
-
-  def parse(in: String) = {
-    parseAll(dillParser, in)
-  }
 
 }
 
 trait ASTNode
 
-case class FeatureNode(name: String, scenarios : List[ScenarioNode]) extends ASTNode {
-  val scenariosMap = scenarios.map(s=>(s.name,s)).toMap
-  
+case class FeatureNode(name: String, scenarios: List[ScenarioNode]) extends ASTNode {
+  val scenariosMap = scenarios.map(s => (s.name, s)).toMap
+
   def findScenario(name: String) = {
     scenariosMap.get(name)
   }
@@ -76,11 +73,11 @@ case class FeatureNode(name: String, scenarios : List[ScenarioNode]) extends AST
   override def toString = name + "\nscenarios: " + scenariosMap.values
 }
 
-case class ScenarioNode(name: String, symbols: Option[List[NameValueNode]], dataTable : Option[DataTableNode]) extends ASTNode {
+case class ScenarioNode(name: String, symbols: Option[List[NameValueNode]], dataTable: Option[DataTableNode]) extends ASTNode {
 
   val symbolTable = symbols match {
-    case Some(symbols) => symbols.map( s=> (s.name, s.value ) ).toMap
-    case None => Map.empty[String,Any]
+    case Some(symbols) => symbols.map(s => (s.name, s.value)).toMap
+    case None => Map.empty[String, Any]
   }
 
   def get(symbolName: String) = {
@@ -89,25 +86,15 @@ case class ScenarioNode(name: String, symbols: Option[List[NameValueNode]], data
 
 }
 
-case class NameValueNode(val name: String, val value: Any) extends ASTNode
+case class NameValueNode(name: String, value: Any) extends ASTNode
 
-case class DataCellNode(val value: String) extends ASTNode
+case class DataCellNode(value: String) extends ASTNode
 
-case class DataTableRowNode() extends ASTNode {
-  val cellValues = MutableList[String]()
-  def addValue(value: String) {
-    cellValues += value
-  }
-}
+case class DataTableRowNode(cellValues: List[String]) extends ASTNode
 
-case class DataTableNode() extends ASTNode {
-  val rows = MutableList[DataTableRowNode]()
-  def addRow(row: DataTableRowNode) {
-    rows += row
-  }
-}
+case class DataTableNode(rows: List[DataTableRowNode]) extends ASTNode
 
-case class MoneyNode(val amount: String) extends ASTNode {
+case class MoneyNode(amount: String) extends ASTNode {
   def asJavaBigDecimal() = {
     BigDecimal(amount).underlying
   }

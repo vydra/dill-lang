@@ -5,28 +5,28 @@ import org.junit._
 import org.scalatest.junit.ShouldMatchersForJUnit
 import org.scalatest.junit.JUnitSuite
 
-class FeatureParserSuite extends JUnitSuite  {
-  
-  @Test def feature_file_starts_with_Feature()  {
+class FeatureParserSuite extends JUnitSuite {
+
+  @Test def feature_file_starts_with_Feature() {
     val featureTxt = """Feature: Withdraw cash"""
     val p = new FeatureParser()
-	val featureNode = p.parse(featureTxt).get
-	assert( featureNode.name === "Withdraw cash")
-  } 
-  
+    val featureNode = p.parse(featureTxt).get
+    assert(featureNode.name === "Withdraw cash")
+  }
+
   @Test def at_least_one_scenario {
-    val featureTxt = 
+    val featureTxt =
       """
       Feature: Withdraw cash
       Scenario: withdraw with balance left
 
       """
     val p = new FeatureParser()
-	val featureNode = p.parse(featureTxt).get
+    val featureNode = p.parse(featureTxt).get
 
     featureNode.findScenario("withdraw with balance left") match {
       case Some(s) => assert(s.name === "withdraw with balance left")
-      case None => 
+      case None =>
     }
 
   }
@@ -40,18 +40,18 @@ class FeatureParserSuite extends JUnitSuite  {
 
       """
     val p = new FeatureParser()
-	val featureNode = p.parse(featureTxt).get
+    val featureNode = p.parse(featureTxt).get
 
     featureNode.findScenario("withdraw with balance left") match {
       case Some(s) => assert(s.name === "withdraw with balance left")
-      case None => 
+      case None =>
     }
     featureNode.findScenario("withdraw with 0 balance") match {
       case Some(s) => assert(s.name === "withdraw with 0 balance")
-      case None => 
+      case None =>
     }
-  } 
-  
+  }
+
   @Test def scenario_may_contain_named_data {
     val featureTxt =
       """
@@ -61,11 +61,11 @@ class FeatureParserSuite extends JUnitSuite  {
 
       """
     val p = new FeatureParser()
-	val featureNode = p.parse(featureTxt).get
+    val featureNode = p.parse(featureTxt).get
 
-	featureNode.findScenario("withdraw with balance left") match {
+    featureNode.findScenario("withdraw with balance left") match {
       case Some(s) => assert(s.get("balance") === "100")
-      case None => 
+      case None =>
     }
   }
 
@@ -80,14 +80,14 @@ class FeatureParserSuite extends JUnitSuite  {
 
       """
     val p = new FeatureParser()
-	val featureNode = p.parse(featureTxt).get
+    val featureNode = p.parse(featureTxt).get
 
-	featureNode.findScenario("withdraw with balance left") match {
+    featureNode.findScenario("withdraw with balance left") match {
       case Some(s) =>
         assert(s.get("balance") === BigDecimal("100.00").underlying)
         assert(s.get("withdrawAmout") === BigDecimal("60.00").underlying)
         assert(s.get("remainingBalance") === BigDecimal("40.00").underlying)
-      case None =>   
+      case None =>
     }
 
   }

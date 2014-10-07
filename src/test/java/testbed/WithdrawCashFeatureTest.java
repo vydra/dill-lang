@@ -20,10 +20,8 @@ public class WithdrawCashFeatureTest extends AbstractFeatureTest {
 		Object remainingBalance = getString("remainingBalance");
 
 		/* custom code below */
-		assertEquals(new BigDecimal("100.00"),balance);
-		assertEquals(new BigDecimal("60.00"),withdrawAmout);
-		assertEquals(new BigDecimal("40.00"),remainingBalance);
+		assertEquals(new BigDecimal("100.00"), balance);
+		assertEquals(new BigDecimal("60.00"), withdrawAmout);
+		assertEquals(new BigDecimal("40.00"), remainingBalance);
 	}
-
-
 }
