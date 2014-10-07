@@ -43,7 +43,7 @@ class DataTableSuite extends JUnitSuite {
       |1|"""
     val p = new FeatureParser()
 	val scenarioNode = p.parseAll(p.scenarioParser, txt).get
-	assert( scenarioNode.dataTable(0).cellValues(0) === "1")
+	assert( scenarioNode.dataTable.get.rows(0).cellValues(0) === "1")
   }
   
   @Test def scenario_with_datatableOneRowTwoCells()  {
@@ -51,8 +51,8 @@ class DataTableSuite extends JUnitSuite {
       |1|2|"""
     val p = new FeatureParser()
 	val scenarioNode = p.parseAll(p.scenarioParser, txt).get
-	assert( scenarioNode.dataTable(0).cellValues(0) === "1")
-    assert( scenarioNode.dataTable(0).cellValues(1) === "2")
+	assert( scenarioNode.dataTable.get.rows(0).cellValues(0) === "1")
+    assert( scenarioNode.dataTable.get.rows(0).cellValues(1) === "2")
   }
   
   @Test def scenario_with_datatable_two_rows_one_cell_each()  {
@@ -62,8 +62,8 @@ class DataTableSuite extends JUnitSuite {
       """
     val p = new FeatureParser()
 	val scenarioNode = p.parseAll(p.scenarioParser, txt).get
-	assert( scenarioNode.dataTable(0).cellValues(0) === "1")
-    assert( scenarioNode.dataTable(1).cellValues(0) === "2")
+	assert( scenarioNode.dataTable.get.rows(0).cellValues(0) === "1")
+    assert( scenarioNode.dataTable.get.rows(1).cellValues(0) === "2")
   }
 
 }

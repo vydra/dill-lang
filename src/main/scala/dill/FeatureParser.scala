@@ -14,8 +14,8 @@ class FeatureParser extends JavaTokenParsers {
     FeatureNode(_)
   }
 
-  def scenarioParser = literal("Scenario:") ~> charSequenceParser ~ opt(rep(nameValueParser)) ~ opt(rep(dataTableRowParser)) ^^ {
-    case scanarioName ~ nameValues ~ dataTableRows =>
+  def scenarioParser = literal("Scenario:") ~> charSequenceParser ~ opt(rep(nameValueParser)) ~ opt(dataTableParser) ^^ {
+    case scanarioName ~ nameValues ~ dataTable =>
       val scenario = ScenarioNode(scanarioName)
       nameValues match {
         case Some(nameValues) =>
@@ -24,9 +24,8 @@ class FeatureParser extends JavaTokenParsers {
           }
         case None =>
       }
-      dataTableRows match {
-        case Some(dataTableRows) => dataTableRows.foreach(
-          row => scenario.addDataTableRow(row))
+      dataTable match {
+        case Some(dataTable) => scenario.addDataTable(dataTable)
         case None =>
       }
 
@@ -110,7 +109,7 @@ case class FeatureNode(val name: String) extends ASTNode {
 case class ScenarioNode(val name: String) extends ASTNode {
 
   val symbolTable = HashMap[String, Any]()
-  val dataTable = MutableList[DataTableRowNode]()
+  var dataTable : Option[DataTableNode] = None
 
   def addSymbol(key: String, value: Any) = {
     symbolTable.put(key, value)
@@ -120,8 +119,8 @@ case class ScenarioNode(val name: String) extends ASTNode {
     symbolTable(symbolName)
   }
 
-  def addDataTableRow(row: DataTableRowNode) = {
-    dataTable += row
+  def addDataTable(pDataTable: DataTableNode) = {
+    dataTable = Some(pDataTable)
   }
 
 }
