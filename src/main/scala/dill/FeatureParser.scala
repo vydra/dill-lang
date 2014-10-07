@@ -6,30 +6,16 @@ import scala.collection.mutable.MutableList
 
 class FeatureParser extends JavaTokenParsers {
 
-
   def dillParser = featureNameParser ~ rep(scenarioParser) ^^ {
     case featureName ~ scenarios =>
       FeatureNode(featureName, scenarios)
   }
   
-  def featureNameParser = literal("Feature:") ~> charSequenceParser
+  def featureNameParser = "Feature:" ~> charSequenceParser
 
-  def scenarioParser = literal("Scenario:") ~> charSequenceParser ~ opt(rep(nameValueParser)) ~ opt(dataTableParser) ^^ {
-    case scanarioName ~ nameValues ~ dataTable =>
-      val scenario = ScenarioNode(scanarioName)
-      nameValues match {
-        case Some(nameValues) =>
-          nameValues.foreach { nv =>
-            scenario.addSymbol(nv.name, nv.value)
-          }
-        case None =>
-      }
-      dataTable match {
-        case Some(dataTable) => scenario.addDataTable(dataTable)
-        case None =>
-      }
-
-      scenario
+  def scenarioParser = "Scenario:" ~> charSequenceParser ~ opt(rep(nameValueParser)) ~ opt(dataTableParser) ^^ {
+    case scanarioName ~ symbols ~ dataTable =>
+      ScenarioNode(scanarioName, symbols,  dataTable)
   }
 
   def upToLeftBraceParser = """[^{]+\{""".r
@@ -43,8 +29,7 @@ class FeatureParser extends JavaTokenParsers {
         case MoneyNode(_) => right.asInstanceOf[MoneyNode].asJavaBigDecimal
         case _ => right
       }
-      val res = NameValueNode(name, value)
-      res
+      NameValueNode(name, value)
   }
 
   def moneyParser = literal("$") ~> """\d+[.]\d+""".r ^^ {
@@ -81,9 +66,7 @@ class FeatureParser extends JavaTokenParsers {
 
 trait ASTNode
 
-case class NameValueNode(val name: String, val value: Any) extends ASTNode
-
-case class FeatureNode(val name: String, scenarios : List[ScenarioNode]) extends ASTNode {
+case class FeatureNode(name: String, scenarios : List[ScenarioNode]) extends ASTNode {
   val scenariosMap = scenarios.map(s=>(s.name,s)).toMap
   
   def findScenario(name: String) = {
@@ -93,24 +76,20 @@ case class FeatureNode(val name: String, scenarios : List[ScenarioNode]) extends
   override def toString = name + "\nscenarios: " + scenariosMap.values
 }
 
-case class ScenarioNode(val name: String) extends ASTNode {
+case class ScenarioNode(name: String, symbols: Option[List[NameValueNode]], dataTable : Option[DataTableNode]) extends ASTNode {
 
-  val symbolTable = HashMap[String, Any]()
-  var dataTable : Option[DataTableNode] = None
-
-  def addSymbol(key: String, value: Any) = {
-    symbolTable.put(key, value)
+  val symbolTable = symbols match {
+    case Some(symbols) => symbols.map( s=> (s.name, s.value ) ).toMap
+    case None => Map.empty[String,Any]
   }
 
   def get(symbolName: String) = {
     symbolTable(symbolName)
   }
 
-  def addDataTable(pDataTable: DataTableNode) = {
-    dataTable = Some(pDataTable)
-  }
-
 }
+
+case class NameValueNode(val name: String, val value: Any) extends ASTNode
 
 case class DataCellNode(val value: String) extends ASTNode
 
