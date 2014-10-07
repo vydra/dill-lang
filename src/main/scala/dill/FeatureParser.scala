@@ -6,13 +6,13 @@ import scala.collection.mutable.MutableList
 
 class FeatureParser extends JavaTokenParsers {
 
-  // override val whiteSpace = """\t+""".r
 
-  def charSequenceParser = """.+""".r
-
-  def featureParser = literal("Feature:") ~> charSequenceParser ^^ {
-    FeatureNode(_)
+  def dillParser = featureNameParser ~ rep(scenarioParser) ^^ {
+    case featureName ~ scenarios =>
+      FeatureNode(featureName, scenarios)
   }
+  
+  def featureNameParser = literal("Feature:") ~> charSequenceParser
 
   def scenarioParser = literal("Scenario:") ~> charSequenceParser ~ opt(rep(nameValueParser)) ~ opt(dataTableParser) ^^ {
     case scanarioName ~ nameValues ~ dataTable =>
@@ -71,13 +71,7 @@ class FeatureParser extends JavaTokenParsers {
       dataTableNode
   }
 
-  def dillParser = featureParser ~ rep(scenarioParser) ^^ {
-    case feature ~ scenarios =>
-      scenarios.foreach { scenario =>
-        feature.add(scenario)
-      }
-      feature
-  }
+  def charSequenceParser = """.+""".r
 
   def parse(in: String) = {
     parseAll(dillParser, in)
@@ -85,22 +79,15 @@ class FeatureParser extends JavaTokenParsers {
 
 }
 
-abstract class ASTNode
+trait ASTNode
 
-case class NameValueNode(val name: String, val value: Any) extends ASTNode {
+case class NameValueNode(val name: String, val value: Any) extends ASTNode
 
-}
-
-case class FeatureNode(val name: String) extends ASTNode {
-  val scenariosMap = HashMap[String, ScenarioNode]()
-
+case class FeatureNode(val name: String, scenarios : List[ScenarioNode]) extends ASTNode {
+  val scenariosMap = scenarios.map(s=>(s.name,s)).toMap
+  
   def findScenario(name: String) = {
     scenariosMap.get(name)
-  }
-
-  def add(s: ScenarioNode) = {
-    scenariosMap.put(s.name, s)
-    this
   }
 
   override def toString = name + "\nscenarios: " + scenariosMap.values
