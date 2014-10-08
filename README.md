@@ -42,7 +42,8 @@ public class WithdrawCashFeatureTest extends AbstractFeatureTest {
 
 ## How to build for Local Maven Repo
 
-Install gradle
+Install gradle.
+
 Go to dill-lang root folder and type: 'gradle publishToMavenLocal'
 
 ## How to use with Maven/Java Project

@@ -15,9 +15,9 @@ public class WithdrawCashFeatureTest extends AbstractFeatureTest {
 
 	@Test
 	public void SuccessfulWithdrawal() {
-		Object balance = getString("balance");
-		Object withdrawAmout = getString("withdrawAmout");
-		Object remainingBalance = getString("remainingBalance");
+		BigDecimal balance = getBigDecimal("balance");
+		BigDecimal withdrawAmout = getBigDecimal("withdrawAmout");
+		BigDecimal remainingBalance = getBigDecimal("remainingBalance");
 
 		/* custom code below */
 		assertEquals(new BigDecimal("100.00"), balance);
