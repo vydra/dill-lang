@@ -1,6 +1,5 @@
 package dill;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,8 +15,8 @@ public abstract class AbstractFeatureTest {
 		return symbolTable.get(name);
 	}
 
-	protected BigDecimal getBigDecimal(String name) {
-		return (BigDecimal)symbolTable.get(name);
+	protected Double getAmount(String name) {
+		return (Double)symbolTable.get(name);
 	}
 
 }
