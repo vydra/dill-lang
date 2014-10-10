@@ -15,8 +15,8 @@ public abstract class AbstractFeatureTest {
 		return symbolTable.get(name);
 	}
 
-	protected Double getAmount(String name) {
-		return (Double)symbolTable.get(name);
+	protected float getAmount(String name) {
+		return (float)symbolTable.get(name);
 	}
 
 }

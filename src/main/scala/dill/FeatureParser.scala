@@ -95,6 +95,6 @@ case class DataTableNode(rows: List[DataTableRowNode]) extends ASTNode
 
 case class MoneyNode(amount: String) extends ASTNode {
   def value() = {
-    amount.toDouble
+    amount.toFloat
   }
 }

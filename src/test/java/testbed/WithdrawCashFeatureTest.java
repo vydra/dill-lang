@@ -13,9 +13,9 @@ public class WithdrawCashFeatureTest extends AbstractFeatureTest {
 
 	@Test
 	public void SuccessfulWithdrawal() {
-		double balance = getAmount("balance");
-		double withdrawAmout = getAmount("withdrawAmout");
-		double remainingBalance = getAmount("remainingBalance");
+		float balance = getAmount("balance");
+		float withdrawAmout = getAmount("withdrawAmout");
+		float remainingBalance = getAmount("remainingBalance");
 
 		/* custom code below */
 		assertEquals(100.00, balance, 0.000001);
