@@ -2,6 +2,7 @@ package dill;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.joda.money.Money;
 
 public abstract class AbstractFeatureTest {
 
@@ -15,8 +16,8 @@ public abstract class AbstractFeatureTest {
 		return symbolTable.get(name);
 	}
 
-	protected float getAmount(String name) {
-		return (float)symbolTable.get(name);
+	protected Money getAmount(String name) {
+		return (Money)symbolTable.get(name);
 	}
 
 }

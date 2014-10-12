@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.joda.money.Money;
+
 import dill.DillJUnitRunner;
 import dill.AbstractFeatureTest;
 
@@ -13,13 +15,13 @@ public class WithdrawCashFeatureTest extends AbstractFeatureTest {
 
 	@Test
 	public void SuccessfulWithdrawal() {
-		float balance = getAmount("balance");
-		float withdrawAmout = getAmount("withdrawAmout");
-		float remainingBalance = getAmount("remainingBalance");
+		Money balance = getAmount("balance");
+		Money withdrawAmout = getAmount("withdrawAmout");
+		Money remainingBalance = getAmount("remainingBalance");
 
 		/* custom code below */
-		assertEquals(100.00, balance, 0.000001);
-		assertEquals(60.00, withdrawAmout, 0.000001);
-		assertEquals(40.00, remainingBalance, 0.000001);
+		assertEquals(Money.parse("USD 100.00"), balance);
+		assertEquals(Money.parse("USD 60.00"), withdrawAmout);
+		assertEquals(Money.parse("USD 40.00"), remainingBalance);
 	}
 }

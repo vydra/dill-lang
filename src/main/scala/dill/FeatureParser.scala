@@ -2,6 +2,7 @@ package dill
 
 import scala.annotation.migration
 import scala.util.parsing.combinator.JavaTokenParsers
+import org.joda.money.Money
 
 class FeatureParser extends JavaTokenParsers {
 
@@ -95,6 +96,6 @@ case class DataTableNode(rows: List[DataTableRowNode]) extends ASTNode
 
 case class MoneyNode(amount: String) extends ASTNode {
   def value() = {
-    amount.toFloat
+    Money.parse("USD " + amount)
   }
 }

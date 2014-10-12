@@ -4,6 +4,7 @@ import org.scalatest.junit.AssertionsForJUnit
 import org.junit._
 import org.scalatest.junit.ShouldMatchersForJUnit
 import org.scalatest.junit.JUnitSuite
+import org.joda.money.Money
 
 class FeatureParserSuite extends JUnitSuite {
 
@@ -84,9 +85,9 @@ class FeatureParserSuite extends JUnitSuite {
 
     featureNode.findScenario("withdraw with balance left") match {
       case Some(s) =>
-        assert(s.get("balance") === 100.00)
-        assert(s.get("withdrawAmout") === 60.00)
-        assert(s.get("remainingBalance") === 40.00)
+        assert(s.get("balance") === Money.parse("USD 100.00"))
+        assert(s.get("withdrawAmout") === Money.parse("USD 60.00"))
+        assert(s.get("remainingBalance") === Money.parse("USD 40.00"))
       case None =>
     }
 
