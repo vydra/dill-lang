@@ -11,35 +11,39 @@ class DataTableSuite extends JUnitSuite {
    * and use http://cukes.info/api/cucumber/jvm/javadoc/cucumber/api/DataTable.html
    * 
    */
-  @Test def data_table_row() {
-    val tableTxt = """|1|"""
+  @Test def data_table_row_col_name_and_one_cell() {
+    val tableTxt = """|num|1|"""
     val p = new FeatureParser()
     val dataTableRowNode = p.parseAll(p.dataTableRowParser, tableTxt).get
-    assert(dataTableRowNode.cellValues(0) === "1")
+    assert(dataTableRowNode.cellValues(0) === "num")
+    assert(dataTableRowNode.cellValues(1) === "1")
   }
 
   @Test def data_table_one_row_two_cells() {
-    val tableTxt = """|1|2|"""
+    val tableTxt = """|num|1|2|"""
     val p = new FeatureParser()
     val dataTableRowNode = p.parseAll(p.dataTableRowParser, tableTxt).get
-    assert(dataTableRowNode.cellValues.size === 2)
-    assert(dataTableRowNode.cellValues(0) === "1")
-    assert(dataTableRowNode.cellValues(1) === "2")
+    assert(dataTableRowNode.cellValues.size === 3)
+    assert(dataTableRowNode.cellValues(0) === "num")
+    assert(dataTableRowNode.cellValues(1) === "1")
+    assert(dataTableRowNode.cellValues(2) === "2")
   }
 
   @Test def data_table_two_rows_one_cell_each() {
-    val tableTxt = """
+    val tableTxt = """Num table:
       |1|
       |2|"""
     val p = new FeatureParser()
     val dataTableNode = p.parseAll(p.dataTableParser, tableTxt).get
     assert(dataTableNode.rows.size === 2)
+    assert(dataTableNode.name === "Num table")
     assert(dataTableNode.rows(0).cellValues(0) === "1")
     assert(dataTableNode.rows(1).cellValues(0) === "2")
   }
 
   @Test def scanrio_with_datatable1() {
     val txt = """Scenario: data table scenario
+Num Table:
       |1|"""
     val p = new FeatureParser()
     val scenarioNode = p.parseAll(p.scenarioParser, txt).get
@@ -48,6 +52,7 @@ class DataTableSuite extends JUnitSuite {
 
   @Test def scenario_with_datatableOneRowTwoCells() {
     val txt = """Scenario: data table scenario
+    DataTable:
       |1|2|"""
     val p = new FeatureParser()
     val scenarioNode = p.parseAll(p.scenarioParser, txt).get
@@ -57,6 +62,7 @@ class DataTableSuite extends JUnitSuite {
 
   @Test def scenario_with_datatable_two_rows_one_cell_each() {
     val txt = """Scenario: data table scenario
+  Data Table:
       |1|
       |2|
       """

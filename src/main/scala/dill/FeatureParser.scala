@@ -43,7 +43,7 @@ class FeatureParser extends JavaTokenParsers {
     MoneyNode(_)
   }
 
-  def dataTableCellParser = "|" ~> """[^|]""".r ^^ {
+  def dataTableCellParser = "|" ~> """[^|]+""".r ^^ {
     DataCellNode(_)
   }
 
@@ -52,9 +52,9 @@ class FeatureParser extends JavaTokenParsers {
       DataTableRowNode(cells.map(s => (s.value)))
   }
 
-  def dataTableParser = rep(dataTableRowParser) ^^ {
-    case rows =>
-      DataTableNode(rows)
+  def dataTableParser = """[^:]+""".r ~ ":" ~ opt("""[^|]+""".r) ~ rep(dataTableRowParser) ^^ {
+    case name ~ colon ~ junk ~ rows =>
+      DataTableNode(name, rows)
   }
 
   def charSequenceParser = """.+""".r
@@ -64,10 +64,10 @@ class FeatureParser extends JavaTokenParsers {
 trait ASTNode
 
 case class FeatureNode(name: String, scenarios: List[ScenarioNode]) extends ASTNode {
-  val scenariosMap = scenarios.map(s => (s.name, s)).toMap
+  val scenariosMap = scenarios.map(s => (s.name.trim(), s)).toMap
 
   def findScenario(name: String) = {
-    scenariosMap.get(name)
+    scenariosMap.get(name.trim())
   }
 
   override def toString = name + "\nscenarios: " + scenariosMap.values
@@ -92,7 +92,7 @@ case class DataCellNode(value: String) extends ASTNode
 
 case class DataTableRowNode(cellValues: List[String]) extends ASTNode
 
-case class DataTableNode(rows: List[DataTableRowNode]) extends ASTNode
+case class DataTableNode(name: String, rows: List[DataTableRowNode]) extends ASTNode
 
 case class MoneyNode(amount: String) extends ASTNode {
   def asJavaBigDecimal() = {

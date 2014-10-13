@@ -43,7 +43,7 @@ class FeatureParserSuite extends JUnitSuite {
     val featureNode = p.parse(featureTxt).get
 
     featureNode.findScenario("withdraw with balance left") match {
-      case Some(s) => assert(s.name === "withdraw with balance left")
+      case Some(s) => assert(s.name.trim === "withdraw with balance left")
       case None =>
     }
     featureNode.findScenario("withdraw with 0 balance") match {
