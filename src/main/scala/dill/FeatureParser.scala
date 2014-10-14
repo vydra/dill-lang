@@ -1,8 +1,8 @@
 package dill
 
-import scala.BigDecimal
 import scala.annotation.migration
 import scala.util.parsing.combinator.JavaTokenParsers
+import org.joda.money.Money
 
 class FeatureParser extends JavaTokenParsers {
 
@@ -33,7 +33,7 @@ class FeatureParser extends JavaTokenParsers {
     case left ~ eq ~ right ~ closingBrace =>
       val name = left //.split("=").head
       val value = right match {
-        case MoneyNode(_) => right.asInstanceOf[MoneyNode].asJavaBigDecimal
+        case MoneyNode(_) => right.asInstanceOf[MoneyNode].value
         case _ => right
       }
       NameValueNode(name, value)
@@ -95,7 +95,7 @@ case class DataTableRowNode(cellValues: List[String]) extends ASTNode
 case class DataTableNode(name: String, rows: List[DataTableRowNode]) extends ASTNode
 
 case class MoneyNode(amount: String) extends ASTNode {
-  def asJavaBigDecimal() = {
-    BigDecimal(amount).underlying
+  def value() = {
+    Money.parse("USD " + amount)
   }
 }

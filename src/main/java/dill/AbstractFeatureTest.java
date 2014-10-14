@@ -1,8 +1,8 @@
 package dill;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import org.joda.money.Money;
 
 public abstract class AbstractFeatureTest {
 
@@ -16,8 +16,8 @@ public abstract class AbstractFeatureTest {
 		return symbolTable.get(name);
 	}
 
-	protected BigDecimal getBigDecimal(String name) {
-		return (BigDecimal)symbolTable.get(name);
+	protected Money getAmount(String name) {
+		return (Money)symbolTable.get(name);
 	}
 
 }
