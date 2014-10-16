@@ -2,14 +2,14 @@ package dill
 
 import org.scalatest.junit.AssertionsForJUnit
 import org.junit._
-import org.scalatest.junit.ShouldMatchersForJUnit
 import org.scalatest.junit.JUnitSuite
 
 class FeatureParserSuite extends JUnitSuite {
+  
+  val p = new FeatureParser()
 
   @Test def feature_file_starts_with_Feature() {
     val featureTxt = """Feature: Withdraw cash"""
-    val p = new FeatureParser()
     val featureNode = p.parse(featureTxt).get
     assert(featureNode.name === "Withdraw cash")
   }
@@ -21,29 +21,26 @@ class FeatureParserSuite extends JUnitSuite {
       Scenario: withdraw with balance left
 
       """
-    val p = new FeatureParser()
     val featureNode = p.parse(featureTxt).get
 
     featureNode.findScenario("withdraw with balance left") match {
       case Some(s) => assert(s.name === "withdraw with balance left")
       case None =>
     }
-
   }
 
   @Test def one_or_more_scenarios {
     val featureTxt =
       """
-      Feature: Withdraw cash
+      Feature: Withdraw cash 
       Scenario: withdraw with balance left
       Scenario: withdraw with 0 balance
 
       """
-    val p = new FeatureParser()
     val featureNode = p.parse(featureTxt).get
 
     featureNode.findScenario("withdraw with balance left") match {
-      case Some(s) => assert(s.name.trim === "withdraw with balance left")
+      case Some(s) => assert(s.name === "withdraw with balance left")
       case None =>
     }
     featureNode.findScenario("withdraw with 0 balance") match {
@@ -58,9 +55,7 @@ class FeatureParserSuite extends JUnitSuite {
       Feature: Withdraw cash
       Scenario: withdraw with balance left
         if {balance=100}
-
       """
-    val p = new FeatureParser()
     val featureNode = p.parse(featureTxt).get
 
     featureNode.findScenario("withdraw with balance left") match {
@@ -79,7 +74,6 @@ class FeatureParserSuite extends JUnitSuite {
         I will have left {remainingBalance=$40.00}
 
       """
-    val p = new FeatureParser()
     val featureNode = p.parse(featureTxt).get
 
     featureNode.findScenario("withdraw with balance left") match {

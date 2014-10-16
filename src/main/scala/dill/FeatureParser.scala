@@ -44,7 +44,8 @@ class FeatureParser extends JavaTokenParsers {
   }
 
   def dataTableCellParser = "|" ~> """[^|]+""".r ^^ {
-    DataCellNode(_)
+    case value =>
+      DataCellNode(value.trim)
   }
 
   def dataTableRowParser = rep(dataTableCellParser) <~ "|" ^^ {

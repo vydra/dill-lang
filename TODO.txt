@@ -1,0 +1,7 @@
+Integer Parser
+Report error when the script is parsable, but incomplete
+Configuration file to control feature file location; type mappings, etc.
+Generate stub Java Code.
+Generate typed data table code.
+Be able to control what data type to use for decimals; ex: Big Decimal or Double/Float
+-- same for Money Type

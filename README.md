@@ -1,10 +1,9 @@
 dill-lang
 =========
 
-Why another BDD tool? The desire to build Dill arose out of an appreciation of the Cucumber/JBehave approach to driving development from an external DSL as opposed to an internal DSL tools like ScalaTest, Spock and EasyB.
+Why another BDD tool? The desire to build Dill arose out of an appreciation of the Cucumber/JBehave approach to driving development from an external DSL as opposed to an internal DSL tools like ScalaTest, Spock and EasyB. An external DSL is preferable on many projects depending on the development and testing approach used. 
 
-Dill is a 'tiny' language for Behavior Driven Development. It's focus is to capture the
-intent of the business scenario along with representative data samples, but without
+The main driver for Dill development is a theory that the steps are much less useful than the Scenario descriptions and the test data, therefore Dill does not have the notion of a step. It's focus is to capture the intent of the business scenario along with representative data samples, but without
 bothering the business stakeholder with any specific steps.
 It borrows heavily from Cucumber, but the smallest unit of execution is a scenario.
 
