@@ -81,7 +81,7 @@ case class ScenarioNode(name: String, symbols: Option[List[NameValueNode]], data
     case None => Map.empty[String, Any]
   }
 
-  def get(symbolName: String) = {
+  def getSymbol(symbolName: String) = {
     symbolTable(symbolName)
   }
 

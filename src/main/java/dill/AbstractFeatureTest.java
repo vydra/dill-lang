@@ -12,8 +12,12 @@ public abstract class AbstractFeatureTest {
 		symbolTable.put(name, value);
 	}
 
-	protected Object getString(String name) {
-		return symbolTable.get(name);
+	protected String getString(String name) {
+		return (String)symbolTable.get(name);
+	}
+	
+	protected Integer getInt(String name) {
+		return (Integer)symbolTable.get(name);
 	}
 
 	protected BigDecimal getBigDecimal(String name) {

@@ -59,7 +59,7 @@ class FeatureParserSuite extends JUnitSuite {
     val featureNode = p.parse(featureTxt).get
 
     featureNode.findScenario("withdraw with balance left") match {
-      case Some(s) => assert(s.get("balance") === "100")
+      case Some(s) => assert(s.getSymbol("balance") === "100")
       case None =>
     }
   }
@@ -78,9 +78,9 @@ class FeatureParserSuite extends JUnitSuite {
 
     featureNode.findScenario("withdraw with balance left") match {
       case Some(s) =>
-        assert(s.get("balance") === BigDecimal("100.00").underlying)
-        assert(s.get("withdrawAmout") === BigDecimal("60.00").underlying)
-        assert(s.get("remainingBalance") === BigDecimal("40.00").underlying)
+        assert(s.getSymbol("balance") === BigDecimal("100.00").underlying)
+        assert(s.getSymbol("withdrawAmout") === BigDecimal("60.00").underlying)
+        assert(s.getSymbol("remainingBalance") === BigDecimal("40.00").underlying)
       case None =>
     }
 
