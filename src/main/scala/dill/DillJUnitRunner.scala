@@ -34,7 +34,6 @@ class DillJUnitRunner(val clazz: java.lang.Class[_]) extends BlockJUnit4ClassRun
           })
       case None => throw new Exception("Scenario not found")
     }
-
     super.methodInvoker(method, currTest)
   }
   

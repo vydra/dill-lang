@@ -17,21 +17,21 @@ class FeatureParser extends JavaTokenParsers {
 
   def featureNameParser = "Feature:" ~> charSequenceParser
 
-  def scenarioParser = "Scenario:" ~> charSequenceParser ~ opt(symbolsParser) ~ opt(dataTableParser) ^^ {
+  def scenarioParser = "Scenario:" ~> charSequenceParser ~ symbolsParser ~ opt(dataTableParser) ^^ {
     case scanarioName ~ symbols ~ dataTable =>
       ScenarioNode(scanarioName, symbols, dataTable)
   }
 
   def symbolsParser = rep(nameValueParser)
 
-  def upToLeftBraceParser = """[^{]+\{""".r
+  def upToLeftBraceParser = """(?!Scenario)[^{]+\{""".r
   def leftEqParser = """[^=]+""".r
   def rightEqParser = """[^}]+""".r
 
   //TODO - dvydra - try using polymorphism insted of asInstanceof!
   def nameValueParser = upToLeftBraceParser ~> leftEqParser ~ "=" ~ (decimalNumber | moneyParser | rightEqParser) ~ "}" ^^ {
     case left ~ eq ~ right ~ closingBrace =>
-      val name = left //.split("=").head
+      val name = left
       val value = right match {
         case MoneyNode(_) => right.asInstanceOf[MoneyNode].asJavaBigDecimal
         case _ => right
@@ -53,7 +53,7 @@ class FeatureParser extends JavaTokenParsers {
       DataTableRowNode(cells.map(s => (s.value)))
   }
 
-  def dataTableParser = """[^:]+""".r ~ ":" ~ opt("""[^|]+""".r) ~ rep(dataTableRowParser) ^^ {
+  def dataTableParser = """(?!Scenario)[^:]+""".r ~ ":" ~ opt("""[^|]+""".r) ~ rep(dataTableRowParser) ^^ {
     case name ~ colon ~ junk ~ rows =>
       DataTableNode(name, rows)
   }
@@ -74,16 +74,15 @@ case class FeatureNode(name: String, scenarios: List[ScenarioNode]) extends ASTN
   override def toString = name + "\nscenarios: " + scenariosMap.values
 }
 
-case class ScenarioNode(name: String, symbols: Option[List[NameValueNode]], dataTable: Option[DataTableNode]) extends ASTNode {
+case class ScenarioNode(name: String, symbols: List[NameValueNode], dataTable: Option[DataTableNode]) extends ASTNode {
 
-  val symbolTable = symbols match {
-    case Some(symbols) => symbols.map(s => (s.name, s.value)).toMap
-    case None => Map.empty[String, Any]
-  }
+  val symbolTable = symbols.map(s => (s.name, s.value)).toMap
 
   def getSymbol(symbolName: String) = {
     symbolTable(symbolName)
   }
+  
+  def symbolCount = symbolTable.size
 
 }
 

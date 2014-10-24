@@ -85,5 +85,43 @@ class FeatureParserSuite extends JUnitSuite {
     }
 
   }
+  
+  @Test def multiple_scenarios {
+    val featureTxt =
+      """
+      Feature: Withdraw cash
+
+      Scenario: withdraw with balance left
+        My bank {balance=$100.00}
+        When I withdraw {withdrawAmout=$60.00}
+        I will have left {remainingBalance=$40.00}
+
+      Scenario: InsufficientFunds
+        My bank {balance=$100.00}
+        When I withdraw {withdrawAmout=$120.00}
+        I will receive an error {message=Insufficient funds}       
+
+      """
+    val featureNode = p.parse(featureTxt).get
+
+    featureNode.findScenario("withdraw with balance left") match {
+      case Some(s) =>
+        assert(s.symbolCount === 3)
+        assert(s.getSymbol("balance") === BigDecimal("100.00").underlying)
+        assert(s.getSymbol("withdrawAmout") === BigDecimal("60.00").underlying)
+        assert(s.getSymbol("remainingBalance") === BigDecimal("40.00").underlying)
+      case None =>
+    }
+    
+    featureNode.findScenario("InsufficientFunds") match {
+      case Some(s) =>
+        assert(s.symbolCount === 3)
+        assert(s.getSymbol("balance") === BigDecimal("100.00").underlying)
+        assert(s.getSymbol("withdrawAmout") === BigDecimal("120.00").underlying)
+        assert(s.getSymbol("message") === "Insufficient funds")
+      case None =>
+    }
+
+  }
 
 }
