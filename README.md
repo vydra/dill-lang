@@ -15,7 +15,7 @@ Feature: Withdraw cash
 
 Scenario: Successful withdrawal
   My bank {balance=$100.00}
-  When I withdraw {withdrawAmout=$50.00}
+  When I withdraw {withdrawAmount=$50.00}
   I will have left {remainingBalance=$50.00}
 
 ````
@@ -32,7 +32,7 @@ public class WithdrawCashFeatureTest extends AbstractFeatureTest {
 	@Test
 	public void SuccessfulWithdrawal() {
 		BigDecimal balance = getBigDecimal("balance");
-		BigDecimal withdrawAmout = getBigDecimal("withdrawAmout");
+		BigDecimal withdrawAmount = getBigDecimal("withdrawAmount");
 		BigDecimal remainingBalance = getBigDecimal("remainingBalance");
 
 		/* fill in the details here */
