@@ -7,26 +7,22 @@ repositories{
     mavenLocal()
 }
 
+def scalaVersion = '2.11.2'
+
 dependencies{
-    compile "org.scala-lang:scala-library:2.11.2"
-    compile "org.scala-lang:scala-compiler:2.11.2"
+    compile "org.scala-lang:scala-library:$scalaVersion"
+    compile "org.scala-lang:scala-compiler:$scalaVersion"
     compile "junit:junit:4.11"
     testCompile "org.scalatest:scalatest_2.11:2.2.2"
+}
+
+tasks.withType(ScalaCompile) { task ->
+    inputs.property("scala_version", rootProject.properties.scalaVersion)
+    outputs.cacheIf { true }    
 }
 
 task run(type: JavaExec, dependsOn: classes) {
     main = 'Main'
     classpath sourceSets.main.runtimeClasspath
     classpath configurations.runtime
-}
-
-publishing {
-	publications {
-        mavenJava(MavenPublication) {
-	        groupId 'com.dill-lang'
-	                artifactId 'dill-lang'
-	                version '1.0-SNAPSOT'
-            from components.java
-        }
-    }
 }
