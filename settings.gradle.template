@@ -1,0 +1,9 @@
+buildCache {
+    local {
+        enabled = false
+    }
+    remote(HttpBuildCache) {
+        url = 'https:<hostname>/cache/'
+        push = true
+    }
+}
