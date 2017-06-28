@@ -75,7 +75,7 @@ Add the following dependency to your project:
   <dependency>
 	<groupId>com.dill-lang</groupId>
 	<artifactId>dill-lang</artifactId>
-	<version>1.0-SNAPSOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<scope>test</scope>
   </dependency>
 ````
