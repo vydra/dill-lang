@@ -28,3 +28,7 @@ java/junit/.cache
 # Gradle specific
 build/
 .gradle/
+
+.idea/
+*.iml
+out/

@@ -1,8 +1,6 @@
 package dill
 
-import org.scalatest.junit.AssertionsForJUnit
 import org.junit._
-import org.scalatest.junit.ShouldMatchersForJUnit
 import org.scalatest.junit.JUnitSuite
 
 class ASTNodeSuite extends JUnitSuite {
