@@ -1,9 +1,8 @@
 package dill
 
 import dill.util.Utils
-import org.scalatest.junit.ShouldMatchersForJUnit
-import org.scalatest.junit.JUnitSuite
 import org.junit.Test
+import org.scalatest.junit.JUnitSuite
 
 class UtilsSuite extends  JUnitSuite {
   
