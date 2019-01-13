@@ -1,19 +1,18 @@
 package dill
 
-import org.scalatest.junit.JUnitSuite
-import org.junit.Test
+import org.scalatest.FunSuite
 
-class DataTableSuite extends JUnitSuite {
+class DataTableSuite extends FunSuite {
   
   val p = new FeatureParser()
   
-  @Test def data_table_row_one_cell() {
+  test("data_table_row_one_cell()") {
     val tableTxt = """|1|"""
     val dataTableRowNode = p.parseAll(p.dataTableRowParser, tableTxt).get
     assert(dataTableRowNode.cellValues(0) === "1")
   }
 
-  @Test def data_table_one_row_two_cells() {
+  test("data_table_one_row_two_cells()") {
     val tableTxt = """|col1|col2|"""
     val dataTableRowNode = p.parseAll(p.dataTableRowParser, tableTxt).get
     assert(dataTableRowNode.cellValues.size === 2)
@@ -21,7 +20,7 @@ class DataTableSuite extends JUnitSuite {
     assert(dataTableRowNode.cellValues(1) === "col2")
   }
 
-  @Test def data_table_two_rows_one_cell_each() {
+  test("data_table_two_rows_one_cell_each()") {
     val tableTxt = """Num table:
       |1|
       |2|"""
@@ -32,7 +31,7 @@ class DataTableSuite extends JUnitSuite {
     assert(dataTableNode.rows(1).cellValues(0) === "2")
   }
 
-  @Test def scenario_with_datatable_one_column() {
+  test("scenario_with_datatable_one_column()") {
     val txt = """Scenario: data table scenario
     Num Table:
       |num|
@@ -42,7 +41,7 @@ class DataTableSuite extends JUnitSuite {
     assert(scenarioNode.dataTable.get.rows(1).cellValues(0) === "1")
   }
   
-    @Test def scenario_with_datatable_one_col_2_rows() {
+    test("scenario_with_datatable_one_col_2_rows()") {
     val txt = """Scenario: data table scenario
   Data Table:
       |num|
@@ -56,7 +55,7 @@ class DataTableSuite extends JUnitSuite {
   }
 
 
-  @Test def scenario_with_datatable_two_columns() {
+  test("scenario_with_datatable_two_columns()") {
     val txt = """Scenario: data table scenario
     DataTable:
       |col1 | col2|

@@ -1,45 +1,19 @@
 dill-lang
 =========
 
-Why another BDD tool? The desire to build Dill arose out of an appreciation of the Cucumber/JBehave approach to driving development from an external DSL as opposed to an internal DSL tools like ScalaTest, Spock and EasyB. An external DSL is preferable on many projects depending on the development and testing approach used. 
-
-The main driver for Dill development is a theory that the steps are much less useful than the Scenario descriptions and the test data, therefore Dill does not have the notion of a step. It's focus is to capture the intent of the business scenario along with representative data samples, but without
-bothering the business stakeholder with any specific steps.
-It borrows heavily from Cucumber, but the smallest unit of execution is a scenario.
-
-Dill works with existing unit testing frameworks. The initial implementation is for JUnit.
+Simple scripting language that can be used to load data into systems and
+to facilitate functional testing.
 
 Example:
 ````
-Feature: Withdraw cash
+Withdraw cash
 
-Scenario: Successful withdrawal
-  My bank {balance=$100.00}
-  When I withdraw {withdrawAmount=$50.00}
-  I will have left {remainingBalance=$50.00}
-
-````
-
-When the scenario above is run without corresponding JUnit test in place, it generates
-the following stub code:
+{balance=$100.00}
+{withdrawAmount=$50.00}
+{remainingBalance=$50.00}
 
 ````
-//package and import stuff
 
-@RunWith(DillJUnitRunner.class)
-public class WithdrawCashFeatureTest extends AbstractFeatureTest {
-
-	@Test
-	public void SuccessfulWithdrawal() {
-		BigDecimal balance = getBigDecimal("balance");
-		BigDecimal withdrawAmount = getBigDecimal("withdrawAmount");
-		BigDecimal remainingBalance = getBigDecimal("remainingBalance");
-
-		/* fill in the details here */
-
-	}
-}
-````
 
 ````
 Feature: Mortgage Calculator
@@ -61,21 +35,3 @@ Amortization schedule:
 
 ````
 
-## How to build for Local Maven Repo
-
-Install gradle.
-
-Go to dill-lang root folder and type: 'gradle publishToMavenLocal'
-
-## How to use with Maven/Java Project
-
-You must publish to local Maven repo as described above
-Add the following dependency to your project:
-````
-  <dependency>
-	<groupId>com.dill-lang</groupId>
-	<artifactId>dill-lang</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<scope>test</scope>
-  </dependency>
-````

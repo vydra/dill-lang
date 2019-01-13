@@ -1,20 +1,18 @@
 package dill
 
-import org.scalatest.junit.AssertionsForJUnit
-import org.junit._
-import org.scalatest.junit.JUnitSuite
+import org.scalatest.FunSuite
 
-class FeatureParserSuite extends JUnitSuite {
+class FeatureParserSuite extends FunSuite {
   
   val p = new FeatureParser()
 
-  @Test def feature_file_starts_with_Feature() {
+  def feature_file_starts_with_Feature() {
     val featureTxt = """Feature: Withdraw cash"""
     val featureNode = p.parse(featureTxt).get
     assert(featureNode.name === "Withdraw cash")
   }
 
-  @Test def at_least_one_scenario {
+  def at_least_one_scenario {
     val featureTxt =
       """
       Feature: Withdraw cash
@@ -29,7 +27,7 @@ class FeatureParserSuite extends JUnitSuite {
     }
   }
 
-  @Test def one_or_more_scenarios {
+   def one_or_more_scenarios {
     val featureTxt =
       """
       Feature: Withdraw cash 
@@ -49,7 +47,7 @@ class FeatureParserSuite extends JUnitSuite {
     }
   }
 
-  @Test def scenario_may_contain_named_data {
+  def scenario_may_contain_named_data {
     val featureTxt =
       """
       Feature: Withdraw cash
@@ -64,7 +62,7 @@ class FeatureParserSuite extends JUnitSuite {
     }
   }
 
-  @Test def scenario_may_contain_multiple_occurrences_of_named_data {
+  def scenario_may_contain_multiple_occurrences_of_named_data {
     val featureTxt =
       """
       Feature: Withdraw cash
@@ -86,7 +84,7 @@ class FeatureParserSuite extends JUnitSuite {
 
   }
   
-  @Test def multiple_scenarios {
+  def multiple_scenarios {
     val featureTxt =
       """
       Feature: Withdraw cash
