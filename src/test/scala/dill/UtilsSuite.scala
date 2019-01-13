@@ -1,9 +1,9 @@
 package dill
 
 import dill.util.Utils
-import org.scalatest.junit.JUnitSuite
+import org.scalatest.FunSuite
 
-class UtilsSuite extends  JUnitSuite {
+class UtilsSuite extends  FunSuite {
   
   def parse_feature_name_from_junit() {
     
