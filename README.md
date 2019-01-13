@@ -35,3 +35,5 @@ Amortization schedule:
 
 ````
 
+CircleCI: https://circleci.com/gh/vydra/dill-lang
+
